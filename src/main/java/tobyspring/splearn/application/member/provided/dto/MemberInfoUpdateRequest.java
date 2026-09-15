@@ -1,4 +1,4 @@
-package tobyspring.splearn.application.member.provided;
+package tobyspring.splearn.application.member.provided.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

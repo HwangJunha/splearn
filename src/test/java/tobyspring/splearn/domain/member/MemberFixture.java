@@ -1,7 +1,7 @@
 package tobyspring.splearn.domain.member;
 
 import org.springframework.test.util.ReflectionTestUtils;
-import tobyspring.splearn.application.member.provided.MemberRegisterRequest;
+import tobyspring.splearn.application.member.provided.dto.MemberRegisterRequest;
 
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {

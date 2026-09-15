@@ -2,7 +2,7 @@ package tobyspring.splearn.domain.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tobyspring.splearn.application.member.provided.MemberInfoUpdateRequest;
+import tobyspring.splearn.application.member.provided.dto.MemberInfoUpdateRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
