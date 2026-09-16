@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 import tobyspring.splearn.domain.AbstractEntity;
+import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.shared.Email;
 
 import java.util.Objects;

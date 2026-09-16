@@ -9,8 +9,9 @@ import tobyspring.splearn.adapter.webapi.dto.MemberRegisterResponse;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.application.member.provided.dto.MemberRegisterRequest;
+import tobyspring.splearn.support.stereotype.WebApiAdapter;
 
-@RestController
+@WebApiAdapter
 @RequiredArgsConstructor
 public class MemberApi {
     private final MemberRegister memberRegister;

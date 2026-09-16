@@ -18,6 +18,7 @@ import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.application.member.provided.dto.MemberRegisterRequest;
 import tobyspring.splearn.domain.member.MemberStatus;
+import tobyspring.splearn.support.stereotype.WebApiAdapterTest;
 
 import java.io.UnsupportedEncodingException;
 
@@ -26,9 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static tobyspring.splearn.AssertThatUtils.equalsTo;
 import static tobyspring.splearn.AssertThatUtils.notNull;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
+@WebApiAdapterTest
 @RequiredArgsConstructor
 class MemberApiTest {
     final MockMvcTester mvcTester;
@@ -61,9 +60,9 @@ class MemberApiTest {
 
     @Test
     void duplicateEmail() throws JsonProcessingException {
-        memberRegister.register(MemberFixture.createMemberRegisterRequest());
-
         MemberRegisterRequest request = MemberFixture.createMemberRegisterRequest();
+        memberRegister.register(request);
+
         String requestJson = objectMapper.writeValueAsString(request);
 
         MvcTestResult result = mvcTester.post().uri("/api/members").contentType(MediaType.APPLICATION_JSON)

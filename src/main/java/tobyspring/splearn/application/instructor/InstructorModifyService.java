@@ -12,10 +12,9 @@ import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.application.member.provided.MemberFinder;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.member.Member;
+import tobyspring.splearn.support.stereotype.ValidatedApplicationService;
 
-@Service
-@Transactional
-@Validated
+@ValidatedApplicationService
 @RequiredArgsConstructor
 public class InstructorModifyService implements InstructorApplication {
     private final InstructorRepository instructorRepository;

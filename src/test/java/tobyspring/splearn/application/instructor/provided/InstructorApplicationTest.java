@@ -2,8 +2,6 @@ package tobyspring.splearn.application.instructor.provided;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import tobyspring.splearn.application.instructor.provided.exception.DuplicateInstructorApplicationException;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.application.member.required.MemberRepository;
@@ -12,12 +10,12 @@ import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.instructor.InstructorStatus;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
+import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SpringBootTest
-@Transactional
+@ApplicationServiceTest
 @RequiredArgsConstructor
 class InstructorApplicationTest {
     final InstructorApplication instructorApplication;

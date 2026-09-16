@@ -8,11 +8,11 @@ import org.springframework.validation.annotation.Validated;
 import tobyspring.splearn.application.instructor.provided.InstructorFinder;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.domain.instructor.Instructor;
+import tobyspring.splearn.support.stereotype.ApplicationService;
 
 import java.util.Optional;
 
-@Service
-@Transactional
+@ApplicationService
 @RequiredArgsConstructor
 public class InstructorQueryService implements InstructorFinder {
     private final InstructorRepository instructorRepository;

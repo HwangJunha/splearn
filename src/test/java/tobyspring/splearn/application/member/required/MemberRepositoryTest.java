@@ -1,6 +1,7 @@
 package tobyspring.splearn.application.member.required;
 
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,12 +15,10 @@ import static tobyspring.splearn.domain.member.MemberFixture.createMemberRegiste
 import static tobyspring.splearn.domain.member.MemberFixture.createPasswordEncoder;
 
 @DataJpaTest
+@RequiredArgsConstructor
 class MemberRepositoryTest {
-    @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    EntityManager entityManager;
+    final MemberRepository memberRepository;
+    final EntityManager entityManager;
 
     @Test
     void createMember() {
@@ -41,10 +40,11 @@ class MemberRepositoryTest {
     
     @Test
     void duplicateEmailFail() {
-        Member member = Member.register(createMemberRegisterRequest().toInfo(), createPasswordEncoder());
+        var registerRequest = createMemberRegisterRequest().toInfo();
+        Member member = Member.register(registerRequest, createPasswordEncoder());
         memberRepository.save(member);
 
-        Member member2 = Member.register(createMemberRegisterRequest().toInfo(), createPasswordEncoder());
+        Member member2 = Member.register(registerRequest, createPasswordEncoder());
         assertThatThrownBy(() -> memberRepository.save(member2))
             .isInstanceOf(DataIntegrityViolationException.class);
     }
