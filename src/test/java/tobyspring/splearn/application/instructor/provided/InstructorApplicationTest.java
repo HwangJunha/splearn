@@ -1,16 +1,14 @@
 package tobyspring.splearn.application.instructor.provided;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
-import tobyspring.splearn.application.instructor.provided.dto.InstructorApplyRequest;
+import tobyspring.splearn.application.instructor.provided.exception.DuplicateInstructorApplicationException;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.instructor.Instructor;
+import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.instructor.InstructorStatus;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
@@ -19,7 +17,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 @RequiredArgsConstructor
 class InstructorApplicationTest {
@@ -32,7 +29,7 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
         assertThat(instructor.getId()).isNotNull();
         assertThat(instructor.getStatus()).isEqualTo(InstructorStatus.PENDING);
@@ -45,11 +42,11 @@ class InstructorApplicationTest {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
 
-        instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
         assertThatThrownBy(
-                () -> instructorApplication.apply(new InstructorApplyRequest(null))
-        ).isInstanceOf(ConstraintViolationException.class);
+                () -> instructorApplication.apply(InstructorFixture.createApplyRequest(member))
+        ).isInstanceOf(DuplicateInstructorApplicationException.class);
     }
 
     @Test
@@ -69,6 +66,6 @@ class InstructorApplicationTest {
     private Instructor preparePendingInstructor() {
         Member member = MemberFixture.createActiveMember();
         memberRepository.save(member);
-        return instructorApplication.apply(new InstructorApplyRequest(member.getId()));
+        return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     }
 }

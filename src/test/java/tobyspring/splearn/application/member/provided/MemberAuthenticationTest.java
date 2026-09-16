@@ -11,6 +11,8 @@ import tobyspring.splearn.application.member.provided.dto.MemberLoginRequest;
 import tobyspring.splearn.application.member.provided.exception.LoginFailedException;
 import tobyspring.splearn.domain.member.MemberFixture;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfiguration.class)
@@ -24,9 +26,11 @@ class MemberAuthenticationTest {
     @Test
     void login(){
         var registerRequest = MemberFixture.createMemberRegisterRequest();
-        memberRegister.register(registerRequest).activate();
+        var member = memberRegister.register(registerRequest);
+        member.activate();
 
-        memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        var loggedInMember = memberAuthenticator.login(new MemberLoginRequest(registerRequest.email(), registerRequest.password()));
+        assertThat(loggedInMember).isEqualTo(member);
     }
 
     @Test

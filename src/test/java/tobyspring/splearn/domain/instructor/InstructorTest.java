@@ -30,9 +30,7 @@ class InstructorTest {
 
     @Test
     void approved() {
-        Member member = MemberFixture.createActiveMember();
-
-        Instructor instructor = Instructor.apply(member);
+        Instructor instructor = InstructorFixture.createInstructor();
 
         instructor.approve();
         assertThat(instructor.status).isEqualTo(InstructorStatus.ACTIVE);
@@ -40,9 +38,7 @@ class InstructorTest {
 
     @Test
     void approvedFailed() {
-        Member member = MemberFixture.createActiveMember();
-        Instructor instructor = Instructor.apply(member);
-        instructor.approve();
+        Instructor instructor = InstructorFixture.createActiveInstructor();
 
         assertThatThrownBy(instructor::approve)
                 .isInstanceOf(IllegalStateException.class);
@@ -50,9 +46,7 @@ class InstructorTest {
 
     @Test
     void reject() {
-        Member member = MemberFixture.createActiveMember();
-
-        Instructor instructor = Instructor.apply(member);
+        Instructor instructor = InstructorFixture.createInstructor();
 
         instructor.reject();
         assertThat(instructor.status).isEqualTo(InstructorStatus.REJECTED);

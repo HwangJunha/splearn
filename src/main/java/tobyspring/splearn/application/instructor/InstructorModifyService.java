@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import tobyspring.splearn.application.instructor.provided.InstructorApplication;
 import tobyspring.splearn.application.instructor.provided.InstructorFinder;
 import tobyspring.splearn.application.instructor.provided.dto.InstructorApplyRequest;
+import tobyspring.splearn.application.instructor.provided.exception.DuplicateInstructorApplicationException;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
 import tobyspring.splearn.application.member.provided.MemberFinder;
 import tobyspring.splearn.domain.instructor.Instructor;
@@ -26,12 +27,20 @@ public class InstructorModifyService implements InstructorApplication {
     public Instructor apply(InstructorApplyRequest applyRequest) {
         //member를 찾아오고
         Member member = memberFinder.find(applyRequest.memberId());
+        //중복 신청 확인
+        checkDuplicateApplication(member);
 
         //instructor 신청
         Instructor instructor = Instructor.apply(member);
 
         //instructor 저장
         return instructorRepository.save(instructor);
+    }
+
+    private void checkDuplicateApplication(Member member) {
+        if(instructorRepository.findByMemberId(member.getId()).isPresent()){
+            throw new DuplicateInstructorApplicationException("회원은 중복해서 강사 신청을 할 수 없습니다.");
+        }
     }
 
     @Override
