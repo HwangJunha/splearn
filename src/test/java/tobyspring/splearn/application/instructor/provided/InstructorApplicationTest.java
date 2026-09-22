@@ -4,12 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import tobyspring.splearn.application.instructor.provided.exception.DuplicateInstructorApplicationException;
 import tobyspring.splearn.application.instructor.required.InstructorRepository;
-import tobyspring.splearn.application.member.required.MemberRepository;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.instructor.InstructorStatus;
-import tobyspring.splearn.domain.member.Member;
-import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 import tobyspring.splearn.support.test.BaseApplicationServiceTest;
 
@@ -24,7 +21,7 @@ class InstructorApplicationTest  extends BaseApplicationServiceTest {
 
     @Test
     void apply(){
-        prepareMember();
+        prepareActiveMember();
 
         Instructor instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -36,7 +33,7 @@ class InstructorApplicationTest  extends BaseApplicationServiceTest {
 
     @Test
     void duplicateApply(){
-        prepareMember();
+        prepareActiveMember();
 
         instructorApplication.apply(InstructorFixture.createApplyRequest(member));
 
@@ -60,7 +57,7 @@ class InstructorApplicationTest  extends BaseApplicationServiceTest {
     }
 
     private Instructor preparePendingInstructor() {
-        prepareMember();
+        prepareActiveMember();
         return instructorApplication.apply(InstructorFixture.createApplyRequest(member));
     }
 }

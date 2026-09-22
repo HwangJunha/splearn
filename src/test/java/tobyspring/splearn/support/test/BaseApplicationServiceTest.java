@@ -3,15 +3,17 @@ package tobyspring.splearn.support.test;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import tobyspring.splearn.application.course.provided.CourseCreator;
+import tobyspring.splearn.application.enrollment.provided.Enroller;
+import tobyspring.splearn.application.enrollment.provided.dto.EnrollRequest;
 import tobyspring.splearn.application.instructor.provided.InstructorApplication;
 import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.course.Course;
 import tobyspring.splearn.domain.course.CourseFixture;
+import tobyspring.splearn.domain.enrollment.Enrollment;
 import tobyspring.splearn.domain.instructor.Instructor;
 import tobyspring.splearn.domain.instructor.InstructorFixture;
 import tobyspring.splearn.domain.member.Member;
 import tobyspring.splearn.domain.member.MemberFixture;
-import tobyspring.splearn.support.stereotype.ApplicationService;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 
 @ApplicationServiceTest
@@ -25,19 +27,22 @@ public class BaseApplicationServiceTest {
     @Autowired
     CourseCreator courseCreator;
 
+    @Autowired
+    Enroller enroller;
+
     protected Member member;
     protected Instructor instructor;
     protected Course course;
+    protected Enrollment enrollment;
 
-    @NonNull
     protected Instructor prepareInstructor() {
-        this.member = prepareMember();
+        this.member = prepareActiveMember();
         this.instructor = instructorApplication.apply(InstructorFixture.createApplyRequest(member));
         this.instructor.approve();
         return this.instructor;
     }
 
-    protected @NonNull Member prepareMember() {
+    protected Member prepareActiveMember() {
         this.member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
         this.member.activate();
         return this.member;
@@ -48,5 +53,21 @@ public class BaseApplicationServiceTest {
         this.course = courseCreator.create(CourseFixture.createCourseCreateRequest(instructor.getId(), null));
         this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
         return this.course;
+    }
+
+    protected Course preparePublishedCourse() {
+        prepareCourse();
+
+        this.course.submitForReview();
+        this.course.publish();
+
+        return this.course;
+    }
+
+    protected Enrollment prepareEnrollment() {
+        Member member = prepareActiveMember();
+        Course course = preparePublishedCourse();
+        this.enrollment = enroller.enroll(new EnrollRequest(member.getId(), course.getId()));
+        return this.enrollment;
     }
 }

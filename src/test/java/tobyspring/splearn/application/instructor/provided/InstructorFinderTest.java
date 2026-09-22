@@ -3,10 +3,7 @@ package tobyspring.splearn.application.instructor.provided;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import tobyspring.splearn.application.instructor.provided.dto.InstructorApplyRequest;
-import tobyspring.splearn.application.member.provided.MemberRegister;
 import tobyspring.splearn.domain.instructor.Instructor;
-import tobyspring.splearn.domain.member.Member;
-import tobyspring.splearn.domain.member.MemberFixture;
 import tobyspring.splearn.support.stereotype.ApplicationServiceTest;
 import tobyspring.splearn.support.test.BaseApplicationServiceTest;
 
@@ -20,7 +17,7 @@ class InstructorFinderTest extends BaseApplicationServiceTest {
 
     @Test
     void findByMember(){
-        prepareMember();
+        prepareActiveMember();
 
         Instructor instructor = instructorApplication.apply(new InstructorApplyRequest(member.getId()));
 
