@@ -23,16 +23,16 @@ public class BaseRepositoryTest {
     protected EntityManager entityManager;
 
     @Autowired
-    protected MemberRepository memberRepository;
+    MemberRepository memberRepository;
 
     @Autowired
-    protected InstructorRepository instructorRepository;
+    InstructorRepository instructorRepository;
 
     @Autowired
-    protected EnrollmentRepository enrollmentRepository;
+    EnrollmentRepository enrollmentRepository;
 
     @Autowired
-    protected CourseRepository courseRepository;
+    CourseRepository courseRepository;
 
     protected Member member;
 
@@ -57,9 +57,8 @@ public class BaseRepositoryTest {
         if(instructor == null) prepareActiveInstructor();
 
         this.course = courseRepository.save(CourseFixture.createCourse(
-                instructor == null ? this.instructor : instructor,
-                title));
-        this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(null).toInfo());
+                instructor == null ? this.instructor : instructor, title));
+        this.course.updateInfo(CourseFixture.createCourseInfoUpdateRequest(title).toInfo());
         return this.course;
     }
 

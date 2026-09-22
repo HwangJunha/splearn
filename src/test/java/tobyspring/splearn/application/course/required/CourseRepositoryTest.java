@@ -37,10 +37,7 @@ class CourseRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void saveAndFindId(){
-        Member member = memberRepository.save(MemberFixture.createActiveMember());
-        Instructor instructor = instructorRepository.save(InstructorFixture.createActiveInstructor(member));
-
+    void saveAndFindId() {
         Course course = CourseFixture.createCourse(instructor, null);
         course = courseRepository.save(course);
 
@@ -55,12 +52,10 @@ class CourseRepositoryTest extends BaseRepositoryTest {
     }
 
     @Test
-    void findByTitleContaining(){
-        List<Long> ids = Stream.of(
-                prepareCourse(instructor, "Hello Spring"),
-                        prepareCourse(instructor, "Clean Spring 2"),
-                        prepareCourse(instructor, "Clean Code"))
-                .map(Course::getId).toList();
+    void findByTitleContaining() {
+        List<Long> ids = Stream.of(prepareCourse(instructor, "Hello Spring"),
+                prepareCourse(instructor, "Clean Spring 2"),
+                prepareCourse(instructor, "Clean Code")).map(Course::getId).toList();
 
         assertThat(courseRepository.findByTitleContaining("Spring").stream().map(Course::getId))
                 .isEqualTo(List.of(ids.get(0), ids.get(1)));
